@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+shopt -s lastpipe nullglob dotglob
+
+declare -r app_name="${0##*/}"
+
+main() {
+    declare -a config_files=()
+    declare -A config=(
+        [ANSIBLED_VERSION]=alpine
+        [ANSIBLED_IMAGE]=willhallonline/ansible
+        [ANSIBLED_PRIVATE_KEY]="$(default_private_key)"
+        [ANSIBLED_RUNTIME]="$(default_runtime)"
+        [ANSIBLED_DEBUG]=0
+    )
+
+    load_config
+
+    declare -a opts=('--rm' '-it' '-v' "$(pwd):/ansible")
+
+    if [[ -n "${config[ANSIBLED_PRIVATE_KEY]}" ]]; then
+        opts+=('-v' "${config[ANSIBLED_PRIVATE_KEY]}:/root/.ssh/id_rsa:ro")
+    fi
+
+    for config_file in "${config_files[@]}"; do
+        opts+=('--env-file' "${config_file}")
+    done
+
+    for env in $(compgen -e ANSIBLE_); do
+        opts+=('-e' "${env}=${!env}")
+    done
+
+    declare -r cmd="${config[ANSIBLED_RUNTIME]}"
+    declare -r image="${config[ANSIBLED_IMAGE]}:${config[ANSIBLED_VERSION]}"
+
+    debug
+
+    "${cmd}" run "${opts[@]}" "${image}" "$@"
+}
+
+load_config() {
+    declare -r user_config_file="$(find_user_config)"
+    if [[ -n "${user_config_file}" ]]; then
+        config_files+=("${user_config_file}")
+    fi
+
+    declare -r local_config_file="$(find_local_config)"
+    if [[ -n "${local_config_file}" ]]; then
+        config_files+=("${local_config_file}")
+
+        if [[ -f "${local_config_file}.local" ]]; then
+            config_files+=("${local_config_file}.local")
+        fi
+    fi
+
+    for config_file in "${config_files[@]}"; do
+        load_config_file "${config_file}"
+    done
+
+    for env in $(compgen -e ANSIBLED_); do
+        config["${env}"]="${!env}"
+    done
+
+    declare -a required=(
+        ANSIBLED_RUNTIME
+        ANSIBLED_IMAGE
+        ANSIBLED_VERSION
+    )
+
+    for option in "${required[@]}"; do
+        if [[ -z "${config[${option}]}" ]]; then
+            error "${option} is required."
+        fi
+    done
+}
+
+find_user_config() {
+    declare -r XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+
+    if [[ -f "${XDG_CONFIG_HOME}/ansibled" ]]; then
+        echo "${XDG_CONFIG_HOME}/ansibled"
+        return 0
+    fi
+
+    if [[ -f "${HOME}/.ansibled" ]]; then
+        echo "${HOME}/.ansibled"
+        return 0
+    fi
+
+    return 1
+}
+
+find_local_config() {
+    local dir="${PWD}"
+
+    while [[ -n "${dir}" ]]; do
+        if [[ "${dir}" == '/' || "${dir}" == "${HOME}" ]]; then
+            break
+        fi
+
+        if [[ -f "${dir}/.ansibled" ]]; then
+            echo "${dir}/.ansibled"
+            return 0
+        fi
+
+        dir="${dir%/*}"
+    done
+
+    return 1
+}
+
+load_config_file() {
+    exec 3<"${1}"
+    while IFS=$'=\n' read -u 3 key val; do
+        if [[ "${key}" == ANSIBLED_* ]]; then
+            config["${key}"]="${val}"
+        fi
+    done
+    exec 3>&-
+}
+
+error() {
+    printf "${app_name}${app_name:+ }ERROR: %s\n" "$@" >&2
+
+    exit 1
+}
+
+default_private_key() {
+    if [[ -f "${HOME}/.ssh/id_rsa" ]]; then
+        echo "${HOME}/.ssh/id_rsa"
+    elif [[ -f "${HOME}/.ssh/id_dsa" ]]; then
+        echo "${HOME}/.ssh/id_dsa"
+    fi
+}
+
+default_runtime() {
+    if command -v podman >/dev/null 2>&1; then
+        echo 'podman'
+    else
+        echo 'docker'
+    fi
+}
+
+debug() {
+    if [[ "${config[ANSIBLED_DEBUG]:-0}" != 1 ]]; then
+        return
+    fi
+
+    echo -n $'\nConfiguration files:'
+    if [[ ${#config_files} == 0 ]]; then
+        echo ' ~'
+    else
+        echo $'\n'
+    fi
+    for config_file in "${config_files[@]}"; do
+        echo "  ${config_file}"
+    done
+    echo $'\nConfiguration:\n'
+    for key in "${!config[@]}"; do
+        echo "  ${key}=${config[${key}]}"
+    done
+    echo
+    echo "${cmd}" run "${opts[@]}" "${image}" "$@"
+    exit
+} >&2
+
+main "$@"
