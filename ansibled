@@ -34,6 +34,10 @@ main() {
     declare -r cmd="${config[ANSIBLED_RUNTIME]}"
     declare -r image="${config[ANSIBLED_IMAGE]}:${config[ANSIBLED_VERSION]}"
 
+    if [[ $# == 0 ]]; then
+        set -- sh
+    fi
+
     debug "$@"
 
     "${cmd}" run "${opts[@]}" "${image}" "$@"
