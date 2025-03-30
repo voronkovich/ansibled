@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+declare -r ansibled="$(dirname "$0")/ansibled"
+declare -r strategy_plugins="$("${ansibled}" /bin/sh -c 'find / -type d | grep ansible_mitogen/plugins/strategy | sort | head -n 1')"
+
+echo "ANSIBLE_STRATEGY=mitogen_linear"
+echo -n "ANSIBLE_STRATEGY_PLUGINS=${strategy_plugins}"
