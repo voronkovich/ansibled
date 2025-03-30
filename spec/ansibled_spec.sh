@@ -1,14 +1,15 @@
 #shellcheck shell=sh
 
+declare -r FIXTURES="${PWD}/spec/fixtures"
+
 Describe 'ansibled'
-    Mock docker
-        echo docker "$@"
-    End
+    Before 'setup'
+    setup() {
+        export PATH="${FIXTURES}/bin:${PATH}"
+    }
 
     It 'prefers Podman over Docker'
-        Mock podman
-            echo podman "$@"
-        End
+        export PATH="${FIXTURES}/bin-podman:${PATH}"
 
         When run script ansibled
         The output should start with 'podman run'
@@ -21,14 +22,10 @@ Describe 'ansibled'
         The status should be success
     End
 
-    It 'uses spcecified container runtime'
-        Mock podman
-            echo podman "$@"
-        End
-
-        export ANSIBLED_RUNTIME=podman
+    It 'uses specified container runtime'
+        export ANSIBLED_RUNTIME=rkt
         When run script ansibled
-        The output should start with 'podman run'
+        The output should start with 'rkt run'
         The status should be success
     End
 
@@ -78,7 +75,7 @@ Describe 'ansibled'
     End
 
     It 'mounts configuration files'
-        cd 'spec/fixtures'
+        cd "${FIXTURES}"
 
         When run script ansibled
         The output should match pattern '*--env-file*.ansibled*--env-file*.ansibled.local*'
@@ -86,7 +83,7 @@ Describe 'ansibled'
     End
 
     It 'loads configuration from files'
-        cd 'spec/fixtures'
+        cd "${FIXTURES}"
 
         When run script ansibled
         The output should include '2.9-ubuntu-3.17'
