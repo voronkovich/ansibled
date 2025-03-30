@@ -18,7 +18,7 @@ A wrapper for [Ansible](https://ansible.com) that provides a consistent, contain
 
 ## Installation
 
-1. Clone this repository to any appropriate location
+1. Clone this repository to any appropriate location:
 
 ```bash
 git clone https://github.com/voronkovich/ansibled ~/.local/share
@@ -66,16 +66,43 @@ The tool loads configuration from these sources:
 2. Local config: `.ansibled` and `.ansibled.local` in your project's root directory
 3. Environment variables (`ANSIBLED_*`, `ANSIBLE_*`)
 
-Available configuration options:
+### Available options
 
-- `ANSIBLED_VERSION`: container image tag e.g `2.11-alpine-3.15` (default: `alpine`)
-- `ANSIBLED_IMAGE`: container image name (default: [willhallonline/ansible](https://hub.docker.com/r/willhallonline/ansible))
-- `ANSIBLED_RUNTIME`: container runtime (default: `podman` if available, else `docker`)
-- `ANSIBLED_SSH_PRIVATE_KEY`: SSH private key (default: `~/.ssh/id_rsa`)
-- `ANSIBLED_DEBUG`: enable debug output (0 or 1)
-- `ANSIBLE_*`: any Ansible [configuration option](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#common-options)
+#### ANSIBLED_VERSION
 
-Example:
+Container image tag e.g. `2.11-alpine-3.15`.
+
+Default: `alpine`.
+
+#### ANSIBLED_IMAGE
+
+Container image name.
+
+Default: [willhallonline/ansible](https://hub.docker.com/r/willhallonline/ansible).
+
+#### ANSIBLED_RUNTIME
+
+Container runtime.
+
+Default: `podman` if available, else `docker`.
+
+#### ANSIBLED_SSH_PRIVATE_KEY
+
+SSH private key.
+
+Default: `~/.ssh/id_rsa`.
+
+#### ANSIBLED_DEBUG
+
+Enable debug output (`0` or `1`)
+
+Default: `0`.
+
+#### ANSIBLE_*
+
+Any Ansible [configuration option](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#common-options).
+
+### Example:
 
 ```env
 # Ansibled configuration
