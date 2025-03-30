@@ -36,10 +36,11 @@ The tool provides wrapper commands for common Ansible utilities:
 
 ```bash
 ansible           # Runs ansible command
-ansible-playbook  # Runs ansible-playbook
+ansible-config    # Runs ansible-config
 ansible-galaxy    # Runs ansible-galaxy
-ansible-vault     # Runs ansible-vault
 ansible-lint      # Runs ansible-lint
+ansible-playbook  # Runs ansible-playbook
+ansible-vault     # Runs ansible-vault
 ```
 
 All commands work similarly to their native Ansible counterparts but run within the containerized environment.
@@ -65,6 +66,12 @@ The tool loads configuration from these sources:
 1. User config: `~/.config/ansibled` or `~/.ansibled`
 2. Local config: `.ansibled` and `.ansibled.local` in your project's root directory
 3. Environment variables (`ANSIBLED_*`, `ANSIBLE_*`)
+
+All config values are merged and imported into the container as environment variables.
+
+The config files are just simple `.env` files.
+
+The `.ansibled.local` file is used to override values from the `.ansibled` file and should not be committed to version control.
 
 ### Available options
 
