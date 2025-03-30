@@ -96,3 +96,7 @@ ANSIBLED_DEBUG=1 ansible all -m ping
 ```
 
 This will show the complete configuration and command that will be executed.
+
+## License
+
+Copyright (c) Voronkovich Oleg. Distributed under the MIT.
