@@ -131,6 +131,14 @@ ANSIBLED_DEBUG=1 ansible all -m ping
 
 This will show the complete configuration and command that will be executed.
 
+## Testing
+
+This project uses [ShellSpec](https://shellspec.info) for testing. To run the tests:
+
+```sh
+shellspec
+```
+
 ## License
 
 Copyright (c) Voronkovich Oleg. Distributed under the MIT.
