@@ -20,15 +20,15 @@ A wrapper for [Ansible](https://ansible.com) that provides a consistent, contain
 
 1. Clone this repository to any appropriate location:
 
-```bash
-git clone https://github.com/voronkovich/ansibled ~/.local/share
-```
+   ```bash
+   git clone https://github.com/voronkovich/ansibled ~/.local/share
+   ```
 
 2. Add the `bin` directory to your `PATH` (`.bashrc`):
 
-```
-export PATH="${HOME}/.local/share/ansibled/bin:$PATH"
-```
+   ```
+   export PATH="${HOME}/.local/share/ansibled/bin:$PATH"
+   ```
 
 ## Usage
 
