@@ -94,7 +94,7 @@ Default: `~/.ssh/id_rsa`.
 
 #### ANSIBLED_DEBUG
 
-Enable debug output (`0` or `1`)
+Enable debug output (`0` or `1`).
 
 Default: `0`.
 
