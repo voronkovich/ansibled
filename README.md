@@ -91,7 +91,7 @@ Default: [willhallonline/ansible](https://hub.docker.com/r/willhallonline/ansibl
 
 Container runtime: `docker`, `podman`, `nerdctl` and etc.
 
-Default: `podman` if available, else `docker`.
+Default: `docker` if available, else `podman` or `nerdctl`.
 
 #### ANSIBLED_SSH_PRIVATE_KEY
 
@@ -119,7 +119,9 @@ Any Ansible [configuration option](https://docs.ansible.com/ansible/latest/refer
 
 ```env
 # Ansibled configuration
-ANSIBLED_VERSION=2.9-alpine-3.17
+ANSIBLED_RUNTIME=podman
+ANSIBLED_IMAGE=docker://alpine/ansible
+ANSIBLED_VERSION=2.18.1
 ANSIBLED_SSH_PRIVATE_KEY=/home/user/.ssh/secret_key
 
 # Ansible configuration
