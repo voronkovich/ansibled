@@ -1,11 +1,13 @@
 name: CI
 on:
-    - push
-    - pull_request
+  - push
+  - pull_request
+env:
+  SHELLSPEC_VERSION: 0.28.0 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - run: curl -fsSL https://git.io/shellspec | sh -s 0.28.0 --yes
-            - run: shellspec
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -fsSL https://git.io/shellspec | sh -s ${SHELLSPEC_VERSION} --yes
+      - run: shellspec
