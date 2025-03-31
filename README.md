@@ -1,8 +1,5 @@
 # Ansibled
 
-[![CI](https://github.com/voronkovich/ansibled/actions/workflows/ci.yaml/badge.svg)](https://github.com/voronkovich/ansibled/actions/workflows/ci.yaml)
-[![GitHub license](https://img.shields.io/github/license/voronkovich/ansibled)](https://github.com/voronkovich/ansibled/blob/main/LICENSE)
-
 A wrapper for [Ansible](https://ansible.com) that provides a consistent, containerized execution environment.
 
 ## Features
