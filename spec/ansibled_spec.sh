@@ -1,16 +1,24 @@
 #shellcheck shell=sh
 
-declare -r FIXTURES="${PWD}/spec/fixtures"
+declare -r FIXTURES="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures"
+declare -r ORIGINAL_PATH="${PATH}"
 
 Describe 'ansibled'
-    Before 'setup'
+    BeforeEach 'setup'
     setup() {
-        export PATH="${FIXTURES}/bin:${PATH}"
-        export HOME="${PWD}/spec"
+        PATH="${FIXTURES}/bin:${PATH}"
+        HOME="${FIXTURES}"
+        unset $(compgen -e ANSIBLED_)
+        unset $(compgen -e ANSIBLE_)
+    }
+
+    AfterEach 'cleanup'
+    cleanup() {
+        PATH="${ORIGINAL_PATH}"
     }
 
     It 'prefers Podman over Docker'
-        export PATH="${FIXTURES}/bin-podman:${PATH}"
+        PATH="${FIXTURES}/bin-podman:${PATH}"
 
         When run command ansibled
         The output should start with 'podman run'
@@ -81,7 +89,7 @@ Describe 'ansibled'
     End
 
     It 'mounts configuration files'
-        export HOME="${FIXTURES}/home"
+        HOME="${FIXTURES}/home"
         cd "${FIXTURES}/project"
 
         When run command ansibled
@@ -90,7 +98,7 @@ Describe 'ansibled'
     End
 
     It 'loads own configuration from files'
-        export HOME="${FIXTURES}/home"
+        HOME="${FIXTURES}/home"
         cd "${FIXTURES}/project"
 
         When run command ansibled
@@ -102,7 +110,7 @@ Describe 'ansibled'
     It 'gives preference to envs over configuration files'
         export ANSIBLED_IMAGE=test-image
         export ANSIBLED_VERSION=test-version
-        export HOME="${FIXTURES}/home"
+        HOME="${FIXTURES}/home"
         cd "${FIXTURES}/project"
 
         When run command ansibled
