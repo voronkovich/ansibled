@@ -102,6 +102,12 @@ SSH private key.
 
 Default: `~/.ssh/id_rsa`.
 
+#### ANSIBLED_OPTS
+
+Extra options passed directly to container runtime command.
+
+Example: `--memory=256m --cpus=0.5`
+
 #### ANSIBLED_DEBUG
 
 Enable debug output (`0` or `1`).

@@ -78,6 +78,14 @@ Describe 'ansibled'
         The status should be success
     End
 
+    It 'passes extra options to container runtime'
+        export ANSIBLED_OPTS='--memory=256m --cpus=0.5'
+        When run command ansibled
+        The output should include '--memory=256m'
+        The output should include '--cpus=0.5'
+        The status should be success
+    End
+
     It 'passes through ANSIBLE_* environment variables'
         export ANSIBLE_FOO=foo
         export ANSIBLE_BAR=bar

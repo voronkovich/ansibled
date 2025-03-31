@@ -12,6 +12,7 @@ main() {
         [ANSIBLED_IMAGE]=willhallonline/ansible
         [ANSIBLED_PRIVATE_KEY]="$(default_private_key)"
         [ANSIBLED_RUNTIME]="$(default_runtime)"
+        [ANSIBLED_OPTS]=''
         [ANSIBLED_DEBUG]=0
     )
 
@@ -30,6 +31,10 @@ main() {
     for env in $(compgen -e ANSIBLE_); do
         opts+=('-e' "${env}=${!env}")
     done
+
+    if [[ -n "${config[ANSIBLED_OPTS]}" ]]; then
+        opts+=(${config[ANSIBLED_OPTS]})
+    fi
 
     declare -r cmd="${config[ANSIBLED_RUNTIME]}"
     declare -r image="${config[ANSIBLED_IMAGE]}:${config[ANSIBLED_VERSION]}"
