@@ -1,3 +1,4 @@
+ANSIBLED_RUNTIME=nerdctl
 ANSIBLED_IMAGE=voronkovich/ansible
 ANSIBLED_VERSION=2.9-alpine
 ANSIBLED_PRIVATE_KEY=/home/oleg/.ssh/id_dsa

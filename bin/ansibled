@@ -140,14 +140,20 @@ default_private_key() {
         echo "${HOME}/.ssh/id_rsa"
     elif [[ -f "${HOME}/.ssh/id_dsa" ]]; then
         echo "${HOME}/.ssh/id_dsa"
+    else
+        return 1
     fi
 }
 
 default_runtime() {
-    if command -v podman >/dev/null 2>&1; then
-        echo 'podman'
-    else
+    if command -v docker >/dev/null 2>&1; then
         echo 'docker'
+    elif command -v podman >/dev/null 2>&1; then
+        echo 'podman'
+    elif command -v nerdctl >/dev/null 2>&1; then
+        echo 'nerdctl'
+    else
+        return 1
     fi
 }
 

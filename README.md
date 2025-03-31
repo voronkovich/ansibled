@@ -4,7 +4,7 @@ A wrapper for [Ansible](https://ansible.com) that provides a consistent, contain
 
 ## Features
 
-- Runs Ansible commands in a containerized environment ([Docker](https://docker.com) or [Podman](https://podman.io))
+- Runs Ansible commands in a containerized environment ([Docker](https://docker.com), [Podman](https://podman.io), [nerdctl](https://github.com/containerd/nerdctl))
 - Supports multiple versions of Ansible through container images
 - Loads configuration from multiple sources: configuration files and environment variables
 - Automatically mounts your SSH private keys
@@ -13,7 +13,7 @@ A wrapper for [Ansible](https://ansible.com) that provides a consistent, contain
 ## Requirements
 
 - Unix-like OS (e.g. Linux, MacOS)
-- Docker or Podman installed on your system
+- Docker compatible container runtime installed on your system
 - Bash shell
 
 ## Installation
@@ -89,7 +89,7 @@ Default: [willhallonline/ansible](https://hub.docker.com/r/willhallonline/ansibl
 
 #### ANSIBLED_RUNTIME
 
-Container runtime: `docker`, `podman`, `colima` and etc.
+Container runtime: `docker`, `podman`, `nerdctl` and etc.
 
 Default: `podman` if available, else `docker`.
 

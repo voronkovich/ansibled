@@ -17,25 +17,17 @@ Describe 'ansibled'
         PATH="${ORIGINAL_PATH}"
     }
 
-    It 'prefers Podman over Docker'
-        PATH="${FIXTURES}/bin-podman:${PATH}"
-
-        When run command ansibled
-        The output should start with 'podman run'
-        The status should be success
-    End
-
-    It 'falls back to Docker when Podman missing'
+    It 'prefers docker over other runtimes'
         When run command ansibled
         The output should start with 'docker run'
         The status should be success
     End
 
     It 'uses specified container runtime'
-        export ANSIBLED_RUNTIME=colima
+        export ANSIBLED_RUNTIME=podman
 
         When run command ansibled
-        The output should start with 'colima run'
+        The output should start with 'podman run'
         The status should be success
     End
 
@@ -126,6 +118,7 @@ Describe 'ansibled'
         cd "${FIXTURES}/project"
 
         When run command ansibled
+        The output should start with 'nerdctl run'
         The output should include 'voronkovich/ansible:2.10-ubuntu'
         The output should include '-v /home/oleg/.ssh/secret_key:/root/.ssh/id_rsa:ro'
         The status should be success
