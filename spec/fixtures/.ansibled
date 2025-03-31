@@ -1,2 +1,0 @@
-ANSIBLED_VERSION=2.9-alpine-3.17
-ANSIBLED_PRIVATE_KEY=/home/ansibled/.ssh/secret_key

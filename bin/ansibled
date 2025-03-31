@@ -152,7 +152,7 @@ debug() {
     fi
 
     echo -n $'\nConfiguration files:'
-    if [[ ${#config_files} == 0 ]]; then
+    if [[ ${#config_files[@]} == 0 ]]; then
         echo ' ~'
     else
         echo $'\n'

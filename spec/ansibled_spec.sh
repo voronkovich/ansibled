@@ -6,6 +6,7 @@ Describe 'ansibled'
     Before 'setup'
     setup() {
         export PATH="${FIXTURES}/bin:${PATH}"
+        export HOME="${PWD}/spec"
     }
 
     It 'prefers Podman over Docker'
@@ -24,6 +25,7 @@ Describe 'ansibled'
 
     It 'uses specified container runtime'
         export ANSIBLED_RUNTIME=rkt
+
         When run script ansibled
         The output should start with 'rkt run'
         The status should be success
@@ -38,6 +40,7 @@ Describe 'ansibled'
     It 'uses specified image version'
         export ANSIBLED_IMAGE=test-image
         export ANSIBLED_VERSION=test-version
+
         When run script ansibled
         The output should include 'test-image:test-version'
         The status should be success
@@ -51,6 +54,7 @@ Describe 'ansibled'
 
     It 'mounts specified SSH key'
         export ANSIBLED_PRIVATE_KEY='/home/ansibled/.ssh/secret_key'
+
         When run script ansibled
         The output should include '-v /home/ansibled/.ssh/secret_key:/root/.ssh/id_rsa:ro'
         The status should be success
@@ -58,6 +62,7 @@ Describe 'ansibled'
 
     It 'shows debug output when enabled'
         export ANSIBLED_DEBUG=1
+
         When run script ansibled
         The error should include 'Configuration files:'
         The error should include 'Configuration:'
@@ -68,6 +73,7 @@ Describe 'ansibled'
     It 'passes through ANSIBLE_* environment variables'
         export ANSIBLE_FOO=foo
         export ANSIBLE_BAR=bar
+
         When run script ansibled
         The output should include '-e ANSIBLE_FOO=foo'
         The output should include '-e ANSIBLE_BAR=bar'
@@ -75,19 +81,32 @@ Describe 'ansibled'
     End
 
     It 'mounts configuration files'
-        cd "${FIXTURES}"
+        export HOME="${FIXTURES}/home"
+        cd "${FIXTURES}/project"
 
         When run script ansibled
-        The output should match pattern '*--env-file*.ansibled*--env-file*.ansibled.local*'
+        The output should match pattern '*--env-file*home/.config/ansibled*--env-file*project/.ansibled*--env-file*project/.ansibled.local*'
         The status should be success
     End
 
-    It 'loads configuration from files'
-        cd "${FIXTURES}"
+    It 'loads own configuration from files'
+        export HOME="${FIXTURES}/home"
+        cd "${FIXTURES}/project"
 
         When run script ansibled
-        The output should include '2.9-ubuntu-3.17'
-        The output should include '-v /home/ansibled/.ssh/secret_key:/root/.ssh/id_rsa:ro'
+        The output should include 'voronkovich/ansible:2.10-ubuntu'
+        The output should include '-v /home/oleg/.ssh/secret_key:/root/.ssh/id_rsa:ro'
+        The status should be success
+    End
+
+    It 'gives preference to envs over configuration files'
+        export ANSIBLED_IMAGE=test-image
+        export ANSIBLED_VERSION=test-version
+        export HOME="${FIXTURES}/home"
+        cd "${FIXTURES}/project"
+
+        When run script ansibled
+        The output should include 'test-image:test-version'
         The status should be success
     End
 End
