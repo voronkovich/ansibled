@@ -92,7 +92,7 @@ Default: [willhallonline/ansible](https://hub.docker.com/r/willhallonline/ansibl
 
 #### ANSIBLED_RUNTIME
 
-Container runtime.
+Container runtime: `docker`, `podman`, `colima` and etc.
 
 Default: `podman` if available, else `docker`.
 
