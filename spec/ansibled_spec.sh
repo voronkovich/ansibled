@@ -68,6 +68,21 @@ Describe 'ansibled'
         The status should be success
     End
 
+    Describe 'shows error when required option is missing'
+        Parameters
+            ANSIBLED_IMAGE
+            ANSIBLED_VERSION
+            ANSIBLED_RUNTIME
+        End
+        It "${1}"
+            export "${1}"=''
+
+            When run ansibled
+            The status should be failure
+            The error should include "ansibled ERROR: ${1} is required."
+        End
+    End
+
     It 'shows debug output when enabled'
         export ANSIBLED_DEBUG=1
 
