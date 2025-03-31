@@ -24,10 +24,10 @@ Describe 'ansibled'
     End
 
     It 'uses specified container runtime'
-        export ANSIBLED_RUNTIME=rkt
+        export ANSIBLED_RUNTIME=colima
 
         When run command ansibled
-        The output should start with 'rkt run'
+        The output should start with 'colima run'
         The status should be success
     End
 
