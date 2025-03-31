@@ -95,6 +95,7 @@ Describe 'ansibled'
 
     It 'passes extra options to container runtime'
         export ANSIBLED_OPTS='--memory=256m --cpus=0.5'
+
         When run command ansibled
         The output should include '--memory=256m'
         The output should include '--cpus=0.5'
