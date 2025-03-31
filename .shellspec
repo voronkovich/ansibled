@@ -1,3 +1,4 @@
 --shell bash
 --require spec_helper
 --path "${PWD}/bin:${PATH}"
+--format d
