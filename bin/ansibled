@@ -4,6 +4,7 @@ set -euo pipefail
 shopt -s lastpipe nullglob dotglob
 
 declare -r app_name="${0##*/}"
+declare -r XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 main() {
     declare -a config_files=()
@@ -85,8 +86,6 @@ load_config() {
 }
 
 find_user_config() {
-    declare -r XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
-
     if [[ -f "${XDG_CONFIG_HOME}/ansibled" ]]; then
         echo "${XDG_CONFIG_HOME}/ansibled"
         return 0

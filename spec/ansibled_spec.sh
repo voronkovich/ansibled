@@ -10,6 +10,7 @@ Describe 'ansibled'
         HOME="${FIXTURES}"
         unset $(compgen -e ANSIBLED_)
         unset $(compgen -e ANSIBLE_)
+        unset XDG_CONFIG_HOME
     }
 
     AfterEach 'cleanup'
