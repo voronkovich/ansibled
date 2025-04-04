@@ -18,16 +18,16 @@ A wrapper for [Ansible](https://ansible.com) that provides a consistent, contain
 
 ## Installation
 
-1. Clone this repository to any appropriate location:
+1. Clone this repository to your preferred directory:
 
-   ```bash
-   git clone https://github.com/voronkovich/ansibled ~/.local/share
+   ```sh
+   git clone https://github.com/voronkovich/ansibled ~/.local/share/ansibled
    ```
 
-2. Add the `bin` directory to your `PATH` (`.bashrc`):
+2. Add the `bin` directory to your `PATH` (in your `.bashrc` or equivalent):
 
-   ```
-   export PATH="${HOME}/.local/share/ansibled/bin:$PATH"
+   ```sh
+   export PATH="${HOME}/.local/share/ansibled/bin:${PATH}"
    ```
 
 ## Usage
