@@ -1,41 +1,45 @@
 # Ansibled
 
-A wrapper for [Ansible](https://ansible.com) that provides a consistent, containerized execution environment.
+Ansibled is a wrapper tool for [Ansible](https://ansible.com) that ensures a consistent environment by running Ansible commands inside containers.
 
-## Features
+## Key Features
 
-- Runs Ansible commands in a containerized environment ([Docker](https://docker.com), [Podman](https://podman.io), [nerdctl](https://github.com/containerd/nerdctl))
-- Supports multiple versions of Ansible through container images
-- Loads configuration from multiple sources: configuration files and environment variables
-- Automatically mounts your SSH private keys
-- Debug mode for troubleshooting
+- **Containerized Execution:** Runs Ansible commands within a containerized environment using [Docker](https://docker.com), [Podman](https://podman.io), or [nerdctl](https://github.com/containerd/nerdctl).
+- **Support for Multiple Ansible Versions:** Easily switch between different Ansible versions using container images.
+- **Flexible Configuration:** Loads configuration from multiple sources including user and project-level files, and environment variables.
+- **Automatic SSH Key Mounting:** Automatically mounts your SSH private key for seamless Ansible operations.
+- **Debug Mode:**  Provides detailed output for easy troubleshooting.
 
-## Requirements
+## Prerequisites
 
-- Unix-like OS (e.g. Linux, MacOS)
-- Docker compatible container runtime installed on your system
+- Unix-like operating system (Linux, macOS, etc.)
+- A compatible container runtime (Docker, Podman, or nerdctl) must be installed and running on your system.
 - Bash shell
 
 ## Installation
 
-1. Clone this repository to your preferred directory:
+1. Clone the Ansibled repository to your desired location.  It's recommended to install it in `~/.local/share/ansibled`:
 
    ```sh
    git clone https://github.com/voronkovich/ansibled ~/.local/share/ansibled
    ```
 
-2. Add the `bin` directory to your `PATH` (in your `.bashrc` or equivalent):
+2. Add the `bin` directory to your shell's `PATH` environment variable.  For Bash, you can add the following line to your `.bashrc` or equivalent shell configuration file:
 
    ```sh
    export PATH="${HOME}/.local/share/ansibled/bin:${PATH}"
    ```
 
+   After modifying your shell configuration, remember to reload it (e.g., `source ~/.bashrc`).
+
 ## Usage
 
-The tool provides wrapper commands for common Ansible utilities:
+Ansibled provides wrapper commands for common Ansible utilities. These wrappers function identically to the standard Ansible commands but execute within the containerized environment.
+
+Available commands:
 
 ```bash
-ansible           # Runs ansible command
+ansible           # Runs the ansible command
 ansible-config    # Runs ansible-config
 ansible-galaxy    # Runs ansible-galaxy
 ansible-lint      # Runs ansible-lint
@@ -43,79 +47,80 @@ ansible-playbook  # Runs ansible-playbook
 ansible-vault     # Runs ansible-vault
 ```
 
-All commands work similarly to their native Ansible counterparts but run within the containerized environment.
+**Example:**
 
-Example:
+To run the `ping` module against all hosts defined in your inventory:
 
 ```sh
 ansible all -m ping
 ```
 
-This will:
+When you execute an Ansibled command, the following steps occur:
 
-1. Start a container with the configured Ansible version
-2. Mount your current directory as `/ansible`
-3. Mount your SSH private key (if configured)
-4. Run the Ansible command within the container
-
+1. A container is started using the configured Ansible image and version.
+2. Your current working directory is mounted inside the container at `/ansible`.
+3. Your configured SSH private key is mounted into the container, if specified.
+4. The Ansible command you invoked is executed within the container.
 
 ## Configuration
 
-The tool loads configuration from these sources:
+Ansibled loads its configuration from several sources, in the following order of precedence (later sources override earlier ones):
 
-1. User config: `~/.config/ansibled` or `~/.ansibled`
-2. Local config: `.ansibled` and `.ansibled.local` in your project's root directory
-3. Environment variables (`ANSIBLED_*`, `ANSIBLE_*`)
+1. **User Configuration:**  `~/.config/ansibled` or `~/.ansibled`
+2. **Project Local Configuration:** `.ansibled` and `.ansibled.local` files in your project's root directory.
+3. **Environment Variables:**  Environment variables prefixed with `ANSIBLED_` or `ANSIBLE_`.
 
-All config values are merged and imported into the container as environment variables.
+Configuration files are simple `.env` files, using the `KEY=VALUE` format.
 
-The config files are just simple `.env` files.
+The `.ansibled.local` file is intended for local overrides of the `.ansibled` configuration and should typically be excluded from version control.
 
-The `.ansibled.local` file is used to override values from the `.ansibled` file and should not be committed to version control.
+### Configuration Options
 
-### Available options
+The following options can be configured via the methods described above:
 
-#### ANSIBLED_VERSION
+#### `ANSIBLED_VERSION`
 
-Container image tag e.g. `2.11-alpine-3.15`.
+Specifies the tag of the container image to use.  This typically corresponds to the Ansible version.
 
-Default: `alpine`.
+*Example:* `2.11-alpine-3.15`
 
-#### ANSIBLED_IMAGE
+*Default:* `alpine` (latest stable version available in the image)
 
-Container image name.
+#### `ANSIBLED_IMAGE`
 
-Default: [willhallonline/ansible](https://hub.docker.com/r/willhallonline/ansible).
+The name of the container image to use.
 
-#### ANSIBLED_RUNTIME
+*Default:* `willhallonline/ansible` ([Docker Hub](https://hub.docker.com/r/willhallonline/ansible))
 
-Container runtime: `docker`, `podman`, `nerdctl` and etc.
+#### `ANSIBLED_RUNTIME`
 
-Default: `docker` if available, else `podman` or `nerdctl`.
+Selects the container runtime to use. Supported runtimes are `docker`, `podman`, and `nerdctl`.
 
-#### ANSIBLED_SSH_PRIVATE_KEY
+*Default:* Automatically detects and uses `docker` if available, otherwise falls back to `podman` or `nerdctl`.
 
-SSH private key.
+#### `ANSIBLED_SSH_PRIVATE_KEY`
 
-Default: `~/.ssh/id_rsa`.
+Path to your SSH private key file. This key will be mounted into the container to enable SSH connections to your managed hosts.
 
-#### ANSIBLED_OPTS
+*Default:* `~/.ssh/id_rsa`
 
-Extra options passed directly to container runtime command.
+#### `ANSIBLED_OPTS`
 
-Example: `--memory=256m --cpus=0.5`
+Allows you to pass extra options directly to the container runtime command.  This is useful for customizing container behavior, such as resource limits.
 
-#### ANSIBLED_DEBUG
+*Example:* `--memory=256m --cpus=0.5`
 
-Enable debug output (`0` or `1`).
+#### `ANSIBLED_DEBUG`
 
-Default: `0`.
+Enables debug output when set to `1`.  Set to `0` to disable. Debug output provides detailed information about the configuration and executed commands.
 
-#### ANSIBLE_*
+*Default:* `0` (disabled)
 
-Any Ansible [configuration option](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#common-options).
+#### `ANSIBLE_*`
 
-### Example:
+Any standard Ansible configuration option can be set using environment variables prefixed with `ANSIBLE_`.  See the [Ansible Configuration documentation](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#common-options) for available options.
+
+### Example Configuration (`.ansibled` file)
 
 ```env
 # Ansibled configuration
@@ -126,22 +131,22 @@ ANSIBLED_SSH_PRIVATE_KEY=/home/user/.ssh/secret_key
 
 # Ansible configuration
 ANSIBLE_HOST_KEY_CHECKING=False
-ANSIBLE_NOCOWS=True
+ANSIBLE_NOCOWS=True # Disable cowsay output for cleaner output
 ```
 
 ## Debugging
 
-Run with debug output:
+To enable debug output, set the `ANSIBLED_DEBUG` environment variable to `1` when running any Ansibled command:
 
 ```sh
 ANSIBLED_DEBUG=1 ansible all -m ping
 ```
 
-This will show the complete configuration and command that will be executed.
+This will print detailed debugging information, including the complete configuration and the exact container command being executed.
 
 ## Testing
 
-This project uses [ShellSpec](https://shellspec.info) for testing. To run the tests:
+Ansibled uses [ShellSpec](https://shellspec.info) for automated testing. To run the test suite, simply execute:
 
 ```sh
 shellspec
@@ -149,4 +154,4 @@ shellspec
 
 ## License
 
-Copyright (c) Voronkovich Oleg. Distributed under the MIT.
+Copyright (c) Voronkovich Oleg. Distributed under the MIT License.
