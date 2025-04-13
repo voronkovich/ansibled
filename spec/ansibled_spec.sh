@@ -61,6 +61,12 @@ Describe 'ansibled'
         The status should be success
     End
 
+    It 'mounts ~/.ssh/known_hosts with rw permissions'
+        When run command ansibled
+        The output should include "-v ${HOME}/.ssh/known_hosts:/root/.ssh/known_hosts:rw"
+        The status should be success
+    End
+
     Describe 'shows error when required option is missing'
         Parameters
             ANSIBLED_IMAGE

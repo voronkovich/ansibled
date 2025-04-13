@@ -26,6 +26,10 @@ main() {
         opts+=('-v' "${config[ANSIBLED_SSH_PRIVATE_KEY]}:/root/.ssh/id_rsa:ro")
     fi
 
+    if [[ -f "${HOME}/.ssh/known_hosts" ]]; then
+        opts+=('-v' "${HOME}/.ssh/known_hosts:/root/.ssh/known_hosts:rw")
+    fi
+
     for config_file in "${config_files[@]}"; do
         opts+=('--env-file' "${config_file}")
     done
