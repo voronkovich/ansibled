@@ -11,19 +11,19 @@ main() {
     declare -A config=(
         [ANSIBLED_VERSION]=alpine
         [ANSIBLED_IMAGE]=willhallonline/ansible
-        [ANSIBLED_PRIVATE_KEY]="$(default_private_key)"
+        [ANSIBLED_SSH_PRIVATE_KEY]="$(default_ssh_private_key)"
+        [ANSIBLED_SSH_AUTH_SOCK]="$(default_ssh_auth_socket)"
         [ANSIBLED_RUNTIME]="$(default_runtime)"
         [ANSIBLED_OPTS]=''
         [ANSIBLED_DEBUG]=0
-        [ANSIBLED_SSH_AUTH_SOCK]="$(default_ssh_auth_socket)"
     )
 
     load_config
 
     declare -a opts=('--rm' '-it' '-v' "$(pwd):/ansible")
 
-    if [[ -n "${config[ANSIBLED_PRIVATE_KEY]}" ]]; then
-        opts+=('-v' "${config[ANSIBLED_PRIVATE_KEY]}:/root/.ssh/id_rsa:ro")
+    if [[ -n "${config[ANSIBLED_SSH_PRIVATE_KEY]}" ]]; then
+        opts+=('-v' "${config[ANSIBLED_SSH_PRIVATE_KEY]}:/root/.ssh/id_rsa:ro")
     fi
 
     for config_file in "${config_files[@]}"; do
@@ -141,7 +141,7 @@ error() {
     exit 1
 }
 
-default_private_key() {
+default_ssh_private_key() {
     if [[ -f "${HOME}/.ssh/id_rsa" ]]; then
         echo "${HOME}/.ssh/id_rsa"
     elif [[ -f "${HOME}/.ssh/id_dsa" ]]; then

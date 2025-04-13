@@ -54,7 +54,7 @@ Describe 'ansibled'
     End
 
     It 'mounts specified SSH key'
-        export ANSIBLED_PRIVATE_KEY='/home/ansibled/.ssh/secret_key'
+        export ANSIBLED_SSH_PRIVATE_KEY='/home/ansibled/.ssh/secret_key'
 
         When run command ansibled
         The output should include '-v /home/ansibled/.ssh/secret_key:/root/.ssh/id_rsa:ro'
