@@ -15,6 +15,7 @@ main() {
         [ANSIBLED_RUNTIME]="$(default_runtime)"
         [ANSIBLED_OPTS]=''
         [ANSIBLED_DEBUG]=0
+        [ANSIBLED_SSH_AUTH_SOCK]="$(default_ssh_auth_socket)"
     )
 
     load_config
@@ -28,6 +29,12 @@ main() {
     for config_file in "${config_files[@]}"; do
         opts+=('--env-file' "${config_file}")
     done
+
+    if [[ -n "${config[ANSIBLED_SSH_AUTH_SOCK]}" ]]; then
+        opts+=(
+            '-v' "${config[ANSIBLED_SSH_AUTH_SOCK]}:${config[ANSIBLED_SSH_AUTH_SOCK]}"
+            '-e' "SSH_AUTH_SOCK=${config[ANSIBLED_SSH_AUTH_SOCK]}")
+    fi
 
     for env in $(compgen -e ANSIBLE_); do
         opts+=('-e' "${env}=${!env}")
@@ -139,6 +146,16 @@ default_private_key() {
         echo "${HOME}/.ssh/id_rsa"
     elif [[ -f "${HOME}/.ssh/id_dsa" ]]; then
         echo "${HOME}/.ssh/id_dsa"
+    else
+        return 1
+    fi
+}
+
+default_ssh_auth_socket() {
+    if [[ -S "${SSH_AUTH_SOCK}" ]]; then
+        echo "${SSH_AUTH_SOCK}"
+    elif [[ -S '/run/host-services/ssh-auth.sock' ]]; then
+        echo "/run/host-services/ssh-auth.sock"
     else
         return 1
     fi

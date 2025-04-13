@@ -104,6 +104,12 @@ Path to your SSH private key file. This key will be mounted into the container t
 
 *Default:* `~/.ssh/id_rsa`
 
+#### `ANSIBLED_SSH_AUTH_SOCK`
+
+Path to the SSH authentication socket. This socket will be mounted into the container to enable SSH agent forwarding, allowing you to use SSH keys managed by your SSH agent.
+
+*Default:* Automatically detects the SSH agent socket path for Linux (`$SSH_AUTH_SOCK`) and MacOS (`/run/host-services/ssh-auth.sock`).
+
 #### `ANSIBLED_OPTS`
 
 Allows you to pass extra options directly to the container runtime command.  This is useful for customizing container behavior, such as resource limits.
