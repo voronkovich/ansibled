@@ -12,13 +12,13 @@ Ansibled is a wrapper tool for [Ansible](https://ansible.com) that ensures a con
 
 ## Prerequisites
 
-- Unix-like operating system (Linux, macOS, etc.)
+- Unix-like operating system (Linux, MacOS, etc.)
 - A compatible container runtime (Docker, Podman, or nerdctl) must be installed and running on your system.
 - Bash shell
 
 ## Installation
 
-1. Clone the Ansibled repository to your desired location.  It's recommended to install it in `~/.local/share/ansibled`:
+1. Clone the Ansibled repository to your desired location. It's recommended to install it in `~/.local/share/ansibled`:
 
    ```sh
    git clone https://github.com/voronkovich/ansibled ~/.local/share/ansibled
@@ -39,7 +39,7 @@ Ansibled provides wrapper commands for common Ansible utilities. These wrappers 
 Available commands:
 
 ```bash
-ansible           # Runs the ansible command
+ansible           # Runs ansible command
 ansible-config    # Runs ansible-config
 ansible-galaxy    # Runs ansible-galaxy
 ansible-lint      # Runs ansible-lint
@@ -66,7 +66,7 @@ When you execute an Ansibled command, the following steps occur:
 
 Ansibled loads its configuration from several sources, in the following order of precedence (later sources override earlier ones):
 
-1. **User Configuration:**  `~/.config/ansibled` or `~/.ansibled`
+1. **User Configuration:**  `~/.config/ansibled` or `~/.ansibled`.
 2. **Project Local Configuration:** `.ansibled` and `.ansibled.local` files in your project's root directory.
 3. **Environment Variables:**  Environment variables prefixed with `ANSIBLED_` or `ANSIBLE_`.
 
