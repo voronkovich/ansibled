@@ -12,6 +12,7 @@ main() {
         [ANSIBLED_VERSION]=alpine
         [ANSIBLED_IMAGE]=willhallonline/ansible
         [ANSIBLED_SSH_PRIVATE_KEY]="$(default_ssh_private_key)"
+        [ANSIBLED_SSH_KNOWN_HOSTS]="$(default_ssh_known_hosts)"
         [ANSIBLED_SSH_AUTH_SOCK]="$(default_ssh_auth_socket)"
         [ANSIBLED_RUNTIME]="$(default_runtime)"
         [ANSIBLED_OPTS]=''
@@ -26,8 +27,8 @@ main() {
         opts+=('-v' "${config[ANSIBLED_SSH_PRIVATE_KEY]}:/root/.ssh/id_rsa:ro")
     fi
 
-    if [[ -f "${HOME}/.ssh/known_hosts" ]]; then
-        opts+=('-v' "${HOME}/.ssh/known_hosts:/root/.ssh/known_hosts:rw")
+    if [[ -n "${config[ANSIBLED_SSH_KNOWN_HOSTS]}" ]]; then
+        opts+=('-v' "${config[ANSIBLED_SSH_KNOWN_HOSTS]}:/root/.ssh/known_hosts:rw")
     fi
 
     if [[ -n "${config[ANSIBLED_SSH_AUTH_SOCK]}" ]]; then
@@ -173,6 +174,14 @@ default_runtime() {
         echo 'podman'
     elif command -v nerdctl >/dev/null 2>&1; then
         echo 'nerdctl'
+    else
+        return 1
+    fi
+}
+
+default_ssh_known_hosts() {
+    if [[ -f "${HOME}/.ssh/known_hosts" ]]; then
+        echo "${HOME}/.ssh/known_hosts"
     else
         return 1
     fi

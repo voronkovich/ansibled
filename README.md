@@ -104,6 +104,12 @@ Path to your SSH private key file. This key will be mounted into the container t
 
 *Default:* `~/.ssh/id_rsa`
 
+#### `ANSIBLED_SSH_KNOWN_HOSTS`
+
+Path to your SSH known_hosts file. This file will be mounted into the container.
+
+*Default:* `~/.ssh/known_hosts`
+
 #### `ANSIBLED_SSH_AUTH_SOCK`
 
 Path to the SSH authentication socket. This socket will be mounted into the container to enable SSH agent forwarding, allowing you to use SSH keys managed by your SSH agent.

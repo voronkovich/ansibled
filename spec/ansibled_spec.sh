@@ -61,7 +61,15 @@ Describe 'ansibled'
         The status should be success
     End
 
-    It 'mounts ~/.ssh/known_hosts with rw permissions'
+    It 'mounts specified known_hosts file'
+        export ANSIBLED_SSH_KNOWN_HOSTS='/path/to/custom_known_hosts'
+
+        When run command ansibled
+        The output should include "-v /path/to/custom_known_hosts:/root/.ssh/known_hosts:rw"
+        The status should be success
+    End
+
+    It 'mounts ~/.ssh/known_hosts by default'
         When run command ansibled
         The output should include "-v ${HOME}/.ssh/known_hosts:/root/.ssh/known_hosts:rw"
         The status should be success
