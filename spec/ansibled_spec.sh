@@ -47,8 +47,17 @@ Describe 'ansibled'
         The status should be success
     End
 
-    It 'mounts current working dir to /ansible'
+    It 'mounts current workdir to specified workdir'
+        export ANSIBLED_WORKDIR=/custom/workdir
         When run command ansibled
+        The output should include '--workdir /custom/workdir'
+        The output should include "-v ${PWD}:/custom/workdir"
+        The status should be success
+    End
+
+    It 'mounts current workdir to /ansible by default'
+        When run command ansibled
+        The output should include '--workdir /ansible'
         The output should include "-v ${PWD}:/ansible"
         The status should be success
     End
@@ -80,6 +89,7 @@ Describe 'ansibled'
             ANSIBLED_IMAGE
             ANSIBLED_VERSION
             ANSIBLED_RUNTIME
+            ANSIBLED_WORKDIR
         End
         It "${1}"
             export "${1}"=''

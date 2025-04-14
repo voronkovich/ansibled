@@ -98,6 +98,12 @@ Selects the container runtime to use. Supported runtimes are `docker`, `podman`,
 
 *Default:* Automatically detects and uses `docker` if available, otherwise falls back to `podman` or `nerdctl`.
 
+#### `ANSIBLED_WORKDIR`
+
+Sets the working directory inside the container. Your current working directory will be mounted to this path.
+
+*Default:* `/ansible`
+
 #### `ANSIBLED_SSH_PRIVATE_KEY`
 
 Path to your SSH private key file. This key will be mounted into the container to enable SSH connections to your managed hosts.

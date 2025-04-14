@@ -11,6 +11,7 @@ main() {
     declare -A config=(
         [ANSIBLED_VERSION]=alpine
         [ANSIBLED_IMAGE]=willhallonline/ansible
+        [ANSIBLED_WORKDIR]='/ansible'
         [ANSIBLED_SSH_PRIVATE_KEY]="$(default_ssh_private_key)"
         [ANSIBLED_SSH_KNOWN_HOSTS]="$(default_ssh_known_hosts)"
         [ANSIBLED_SSH_AUTH_SOCK]="$(default_ssh_auth_socket)"
@@ -21,7 +22,11 @@ main() {
 
     load_config
 
-    declare -a opts=('--rm' '-it' '-v' "$(pwd):/ansible")
+    declare -a opts=(
+        '--rm' '-it'
+        '--workdir' "${config[ANSIBLED_WORKDIR]}"
+        '-v' "$(pwd):${config[ANSIBLED_WORKDIR]}"
+    )
 
     if [[ -n "${config[ANSIBLED_SSH_PRIVATE_KEY]}" ]]; then
         opts+=('-v' "${config[ANSIBLED_SSH_PRIVATE_KEY]}:/root/.ssh/id_rsa:ro")
@@ -89,6 +94,7 @@ load_config() {
         ANSIBLED_RUNTIME
         ANSIBLED_IMAGE
         ANSIBLED_VERSION
+        ANSIBLED_WORKDIR
     )
 
     for option in "${required[@]}"; do
