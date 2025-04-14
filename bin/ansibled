@@ -30,15 +30,16 @@ main() {
         opts+=('-v' "${HOME}/.ssh/known_hosts:/root/.ssh/known_hosts:rw")
     fi
 
-    for config_file in "${config_files[@]}"; do
-        opts+=('--env-file' "${config_file}")
-    done
-
     if [[ -n "${config[ANSIBLED_SSH_AUTH_SOCK]}" ]]; then
         opts+=(
             '-v' "${config[ANSIBLED_SSH_AUTH_SOCK]}:${config[ANSIBLED_SSH_AUTH_SOCK]}"
-            '-e' "SSH_AUTH_SOCK=${config[ANSIBLED_SSH_AUTH_SOCK]}")
+            '-e' "SSH_AUTH_SOCK=${config[ANSIBLED_SSH_AUTH_SOCK]}"
+        )
     fi
+
+    for config_file in "${config_files[@]}"; do
+        opts+=('--env-file' "${config_file}")
+    done
 
     for env in $(compgen -e ANSIBLE_); do
         opts+=('-e' "${env}=${!env}")
