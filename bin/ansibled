@@ -56,7 +56,11 @@ main() {
     fi
 
     declare -r cmd="${config[ANSIBLED_RUNTIME]}"
-    declare -r image="${config[ANSIBLED_IMAGE]}:${config[ANSIBLED_VERSION]}"
+    declare image="${config[ANSIBLED_IMAGE]}:${config[ANSIBLED_VERSION]}"
+
+    if [[ "${cmd}" == "podman" ]] && [[ "${image}" != *"://"* ]]; then
+        image="docker://${image}"
+    fi
 
     if [[ $# == 0 ]]; then
         set -- sh
