@@ -47,6 +47,16 @@ Describe 'ansibled'
         The status should be success
     End
 
+    It 'adds docker:// protocol for podman'
+        export ANSIBLED_RUNTIME=podman
+        export ANSIBLED_IMAGE=test-image
+        export ANSIBLED_VERSION=test-version
+
+        When run command ansibled
+        The output should include 'docker://test-image:test-version'
+        The status should be success
+    End
+
     It 'mounts current workdir to specified workdir'
         export ANSIBLED_WORKDIR=/custom/workdir
         When run command ansibled
