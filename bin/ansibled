@@ -142,13 +142,11 @@ find_local_config() {
 }
 
 load_config_file() {
-    exec 3<"${1}"
-    while IFS=$'=\n' read -u 3 key val; do
+    while IFS=$'=' read -r key val; do
         if [[ "${key}" == ANSIBLED_* ]]; then
             config["${key}"]="${val}"
         fi
-    done
-    exec 3>&-
+    done <"${1}"
 }
 
 default_ssh_private_key() {
