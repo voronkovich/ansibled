@@ -173,7 +173,7 @@ default_ssh_auth_socket() {
     if [[ -S "${SSH_AUTH_SOCK}" ]]; then
         echo "${SSH_AUTH_SOCK}"
     elif [[ -S '/run/host-services/ssh-auth.sock' ]]; then
-        echo "/run/host-services/ssh-auth.sock"
+        echo '/run/host-services/ssh-auth.sock'
     else
         return 1
     fi
