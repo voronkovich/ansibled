@@ -76,7 +76,7 @@ Describe 'ansibled'
         export ANSIBLED_SSH_PRIVATE_KEY='/home/ansibled/.ssh/secret_key'
 
         When run command ansibled
-        The output should include '-v /home/ansibled/.ssh/secret_key:/root/.ssh/id_rsa:ro'
+        The output should include '-v /home/ansibled/.ssh/secret_key:/root/.ssh/identity:ro'
         The status should be success
     End
 
@@ -155,7 +155,7 @@ Describe 'ansibled'
         When run command ansibled
         The output should start with 'nerdctl run'
         The output should include 'voronkovich/ansible:2.10-ubuntu'
-        The output should include '-v /home/oleg/.ssh/secret_key:/root/.ssh/id_rsa:ro'
+        The output should include '-v /home/oleg/.ssh/secret_key:/root/.ssh/identity:ro'
         The status should be success
     End
 

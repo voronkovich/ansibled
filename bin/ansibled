@@ -29,7 +29,7 @@ main() {
     )
 
     if [[ -n "${config[ANSIBLED_SSH_PRIVATE_KEY]}" ]]; then
-        opts+=('-v' "${config[ANSIBLED_SSH_PRIVATE_KEY]}:/root/.ssh/id_rsa:ro")
+        opts+=('-v' "${config[ANSIBLED_SSH_PRIVATE_KEY]}:/root/.ssh/identity:ro")
     fi
 
     if [[ -n "${config[ANSIBLED_SSH_KNOWN_HOSTS]}" ]]; then
@@ -162,6 +162,8 @@ default_ssh_private_key() {
         echo "${HOME}/.ssh/id_rsa"
     elif [[ -f "${HOME}/.ssh/id_dsa" ]]; then
         echo "${HOME}/.ssh/id_dsa"
+    elif [[ -f "${HOME}/.ssh/identity" ]]; then
+        echo "${HOME}/.ssh/identity"
     else
         return 1
     fi
