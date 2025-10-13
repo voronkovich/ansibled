@@ -84,6 +84,13 @@ The name and tag of the container image to use, in the format `image:tag`: `will
 
 *Default:* `willhallonline/ansible:alpine` ([Docker Hub](https://hub.docker.com/r/willhallonline/ansible))
 
+Some [alternative images](https://hub.docker.com/search?q=ansible):
+
+- [alpine/ansible](https://hub.docker.com/r/alpine/ansible)
+- [ansible-community/community-ee-base](https://github.com/ansible-community/images/pkgs/container/community-ee-base)
+- [librespace/ansible](https://hub.docker.com/r/librespace/ansible)
+- [serversideup/ansible](https://hub.docker.com/r/serversideup/ansible)
+
 #### `ANSIBLED_RUNTIME`
 
 Selects the container runtime to use. Supported runtimes are `docker`, `podman`, and `nerdctl`.
