@@ -151,12 +151,6 @@ load_config_file() {
     exec 3>&-
 }
 
-error() {
-    printf "${app_name}${app_name:+ }ERROR: %s\n" "$@" >&2
-
-    exit 1
-}
-
 default_ssh_private_key() {
     if [[ -f "${HOME}/.ssh/id_ed25519" ]]; then
         echo "${HOME}/.ssh/id_ed25519"
@@ -229,5 +223,11 @@ debug() {
     echo "${cmd}" run "${opts[@]}" "${image}" "$@"
     exit
 } >&2
+
+error() {
+    printf "${app_name}${app_name:+ }ERROR: %s\n" "$@" >&2
+
+    exit 1
+}
 
 main "$@"
