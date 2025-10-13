@@ -1,1 +1,1 @@
-ANSIBLED_VERSION=2.10-ubuntu
+ANSIBLED_IMAGE=voronkovich/ansible:2.10-ubuntu

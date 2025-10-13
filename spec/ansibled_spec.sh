@@ -38,9 +38,8 @@ Describe 'ansibled'
         The status should be success
     End
 
-    It 'uses specified image version'
-        export ANSIBLED_IMAGE=test-image
-        export ANSIBLED_VERSION=test-version
+    It 'uses specified image with tag'
+        export ANSIBLED_IMAGE=test-image:test-version
 
         When run command ansibled
         The output should include 'test-image:test-version'
@@ -49,8 +48,7 @@ Describe 'ansibled'
 
     It 'adds docker:// protocol for podman'
         export ANSIBLED_RUNTIME=podman
-        export ANSIBLED_IMAGE=test-image
-        export ANSIBLED_VERSION=test-version
+        export ANSIBLED_IMAGE=test-image:test-version
 
         When run command ansibled
         The output should include 'docker://test-image:test-version'
@@ -97,7 +95,6 @@ Describe 'ansibled'
     Describe 'shows error when required option is missing'
         Parameters
             ANSIBLED_IMAGE
-            ANSIBLED_VERSION
             ANSIBLED_RUNTIME
             ANSIBLED_WORKDIR
         End
@@ -160,8 +157,7 @@ Describe 'ansibled'
     End
 
     It 'gives preference to envs over configuration files'
-        export ANSIBLED_IMAGE=test-image
-        export ANSIBLED_VERSION=test-version
+        export ANSIBLED_IMAGE=test-image:test-version
         HOME="${FIXTURES}/home"
         cd "${FIXTURES}/project"
 

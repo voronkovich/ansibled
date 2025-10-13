@@ -78,19 +78,11 @@ The `.ansibled.local` file is intended for local overrides of the `.ansibled` co
 
 The following options can be configured via the methods described above:
 
-#### `ANSIBLED_VERSION`
-
-Specifies the tag of the container image to use.  This typically corresponds to the Ansible version.
-
-*Example:* `2.11-alpine-3.15`
-
-*Default:* `alpine` (latest stable version available in the image)
-
 #### `ANSIBLED_IMAGE`
 
-The name of the container image to use.
+The name and tag of the container image to use, in the format `image:tag`: `willhallonline/ansible:2.11-alpine-3.15`.
 
-*Default:* `willhallonline/ansible` ([Docker Hub](https://hub.docker.com/r/willhallonline/ansible))
+*Default:* `willhallonline/ansible:alpine` ([Docker Hub](https://hub.docker.com/r/willhallonline/ansible))
 
 #### `ANSIBLED_RUNTIME`
 
@@ -143,8 +135,7 @@ Any standard Ansible configuration option can be set using environment variables
 ```env
 # Ansibled configuration
 ANSIBLED_RUNTIME=podman
-ANSIBLED_IMAGE=docker://alpine/ansible
-ANSIBLED_VERSION=2.18.1
+ANSIBLED_IMAGE=willhallonline/ansible:2.18.1
 ANSIBLED_SSH_PRIVATE_KEY=/home/user/.ssh/secret_key
 
 # Ansible configuration
