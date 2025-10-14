@@ -80,7 +80,7 @@ The following options can be configured via the methods described above:
 
 #### `ANSIBLED_IMAGE`
 
-The name and tag of the container image to use, in the format `image:tag`: `willhallonline/ansible:2.11-alpine-3.15`.
+The name and tag of the container image to use, in the format `image:tag` e.g. `willhallonline/ansible:2.11-alpine-3.15`.
 
 *Default:* `willhallonline/ansible:alpine` ([Docker Hub](https://hub.docker.com/r/willhallonline/ansible))
 
