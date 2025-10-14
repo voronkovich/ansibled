@@ -140,11 +140,29 @@ find_local_config() {
 }
 
 load_config_file() {
+    declare -r config_file="${1:-/dev/stdin}"
+
     while IFS=$'=' read -r key val; do
-        if [[ "${key}" == ANSIBLED_* ]]; then
-            config["${key}"]="${val}"
+        if ! [[ "${key}" == ANSIBLED_* ]]; then
+            continue
         fi
-    done <"${1}"
+
+        case "${key}" in
+        ANSIBLED_IMAGE) ;;
+        ANSIBLED_WORKDIR) ;;
+        ANSIBLED_SSH_PRIVATE_KEY) ;;
+        ANSIBLED_SSH_KNOWN_HOSTS) ;;
+        ANSIBLED_SSH_AUTH_SOCK) ;;
+        ANSIBLED_RUNTIME) ;;
+        ANSIBLED_OPTS) ;;
+        ANSIBLED_DEBUG) ;;
+        *)
+            error "Unknown option '${key}' in '${config_file}'"
+            ;;
+        esac
+
+        config["${key}"]="${val}"
+    done <"${config_file}"
 }
 
 default_ssh_private_key() {

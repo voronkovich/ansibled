@@ -165,4 +165,12 @@ Describe 'ansibled'
         The output should include 'test-image:test-version'
         The status should be success
     End
+
+    It 'fails with proper error for unknown option in config file'
+        cd "${FIXTURES}/invalid"
+
+        When run command ansibled
+        The status should be failure
+        The error should include "Unknown option 'ANSIBLED_INVALID_OPTION' in '${FIXTURES}/invalid/.ansibled'"
+    End
 End
