@@ -121,7 +121,7 @@ find_user_config() {
 }
 
 find_local_config() {
-    local dir="${PWD}"
+    declare dir="${PWD}"
 
     while [[ -n "${dir}" ]]; do
         if [[ "${dir}" == '/' || "${dir}" == "${HOME}" ]]; then
