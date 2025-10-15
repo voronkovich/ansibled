@@ -3,7 +3,7 @@ on:
   - push
   - pull_request
 env:
-  SHELLSPEC_VERSION: 0.28.0 
+  SHELLSPEC_VERSION: 0.28.0
 jobs:
   test:
     runs-on: ubuntu-latest
