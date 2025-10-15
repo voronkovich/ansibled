@@ -186,7 +186,7 @@ default_ssh_private_key() {
 }
 
 default_ssh_auth_socket() {
-    if [[ -S "${SSH_AUTH_SOCK}" ]]; then
+    if [[ -S "${SSH_AUTH_SOCK:-}" ]]; then
         echo "${SSH_AUTH_SOCK}"
     elif [[ -S '/run/host-services/ssh-auth.sock' ]]; then
         echo '/run/host-services/ssh-auth.sock'
