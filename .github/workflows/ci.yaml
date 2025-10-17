@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: curl -fsSL https://git.io/shellspec | sh -s ${SHELLSPEC_VERSION} --yes
+      - run: echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"; curl -fsSL https://git.io/shellspec | sh -s ${SHELLSPEC_VERSION} --yes
       - run: shellspec
